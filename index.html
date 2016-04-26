@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
+        <script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <!-- <div class="row file-browser">
+                <label class="col-xs-6 btn btn-primary btn-file">
+                    <input type="file" class="browser">
+                    Browse file...
+                </label>
+                <span id="file-info"></span>
+            </div> -->
+            <div class="row">
+                <div class="input-group col-xs-12 col-sm-6">
+                    <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            <i class="fa fa-picture-o"></i>
+                            Browse&hellip;
+                            <input type="file" class="browser">
+                        </span>
+                    </span>
+                    <input id="file-info" type="text" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="canvas">
+                    <canvas id="cropCanvas" width="550" height="550"></canvas>
+                </div>
+
+                <div id="zoom-controls">
+                    <span id="plus"><i class="fa fa-lg fa-search-plus"></i></span>
+                    <span id="minus"><i class="fa fa-lg fa-search-minus"></i></span>
+                </div>
+                <img id="canvasImg" alt="Right click to save me!" src="" style="display:none">
+            </div>
+            
+            <div class="row">
+                <h3>Your TPL image</h3>
+                <canvas id="finalCanvas" width="600" height="600"></canvas>
+            </div>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>    

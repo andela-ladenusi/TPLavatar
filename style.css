@@ -1,0 +1,56 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+canvas {
+    width: 300px;
+    height: 300px;
+}
+#cropCanvas {
+    border: 2px solid #55ACEE;;
+    border-radius: 50%;
+}
+.input-group {
+    margin: 20px 0;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+.canvas {
+    float: left;
+}
+#zoom-controls {
+    float: left;
+    position: relative;
+    height: 300px;
+}
+#zoom-controls span {
+    cursor: pointer;
+    display: block;
+    background-color: #55ACEE;
+    color: #FFF;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+#zoom-controls span:first-child {
+    margin-bottom: 7px;
+}
+#zoom-controls span:hover {
+    background-color: #3AA3E3;
+}
