@@ -5,28 +5,31 @@ var angle = 0,
 tplTemp.src = 'avatar-template.png';
 
 function previewFile(){
-    var filename = $(this).val().split('\\');
+    var filename = $(this).val().split('\\'),
+        cropCanvas = document.getElementById('cropCanvas'),
+        finalCanvas = document.getElementById('finalCanvas'),
+        preview = document.getElementById('canvasImg'),
+        cCtx = cropCanvas.getContext('2d'),
+        fCtx = finalCanvas.getContext('2d'),
+        file = document.querySelector('input[type=file]').files[0],
+        reader = new FileReader();
+    
     $("#file-info").val(filename[filename.length - 1]);
-    var cropCanvas = document.getElementById('cropCanvas');
-    var finalCanvas = document.getElementById('finalCanvas');
-    var preview = document.getElementById('canvasImg'); //selects the query named img
-    var cCtx = cropCanvas.getContext('2d');
-    var fCtx = finalCanvas.getContext('2d');
-    var x = cropCanvas.width/2 - preview.width/2;
-    var y = cropCanvas.height/2 - preview.height/2;
-    var file = document.querySelector('input[type=file]').files[0]; //sames as here
-    var reader = new FileReader();
 
     reader.onloadend = function () {
         cCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
         fCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
+        
         preview.src = reader.result;
+        
         preview.onload = function () {
-            var translatePos = getCoordinates(cropCanvas, preview);
-            var scale = 1.0;
+            var translatePos = getCoordinates(cropCanvas, preview),
+                scale = 1.0;
 
             draw(scale, translatePos);
+            
             updateTPLCanvas();
+            
             $("#TPLCanvas").removeClass("hidden");
         };
     };
@@ -39,20 +42,21 @@ function previewFile(){
 }
 
 function updateTPLCanvas() {
-    var finalCanvas = document.getElementById('finalCanvas');
-    var fCtx = finalCanvas.getContext('2d');
+    var cropCanvas = document.getElementById('cropCanvas'),
+        canvas = document.getElementById('finalCanvas'),
+        ctx = canvas.getContext('2d');
     
-    fCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
-    fCtx.drawImage(cropCanvas, 20, 20);
-    // fCtx.fillStyle = "RGBA(140, 29, 29, 0.6)";
-    // fCtx.fillRect(0, 0, 600, 600);
-    fCtx.drawImage(tplTemp, 0, 0, 600, 600);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(cropCanvas, 20, 20);
+    // ctx.fillStyle = "RGBA(140, 29, 29, 0.6)";
+    // ctx.fillRect(0, 0, 600, 600);
+    ctx.drawImage(tplTemp, 0, 0, 600, 600);
 }
 
 function rotateCanvas(deg, translatePos) {
-    var preview = document.getElementById('canvasImg');
-    var canvas = document.getElementById("cropCanvas");
-    var ctx = canvas.getContext("2d");
+    var preview = document.getElementById('canvasImg'),
+        canvas = document.getElementById("cropCanvas"),
+        ctx = canvas.getContext("2d");
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
@@ -67,9 +71,9 @@ function rotateCanvas(deg, translatePos) {
 
 
 function draw(scale, translatePos) {
-    var preview = document.getElementById('canvasImg');
-    var canvas = document.getElementById("cropCanvas");
-    var ctx = cropCanvas.getContext("2d");
+    var preview = document.getElementById('canvasImg'),
+        canvas = document.getElementById("cropCanvas"),
+        ctx = cropCanvas.getContext("2d");
  
     // clear cropCanvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -91,18 +95,16 @@ function getCoordinates(canvas, image) {
 }
 
 function init(){
-    var canvas = document.getElementById("cropCanvas");
-    var preview = document.getElementById("canvasImg");
-    var zoomIn = document.getElementById("plus");
-    var zoomOut = document.getElementById("minus");
-    var clockwise = document.getElementById("clockwise");
-    var counterclockwise = document.getElementById("counterclockwise");
- 
-    var translatePos = {};
- 
-    var scaleMultiplier = 0.9;
-    var startDragOffset = {};
-    var mouseDown = false;
+    var canvas = document.getElementById("cropCanvas"),
+        preview = document.getElementById("canvasImg"),
+        zoomIn = document.getElementById("plus"),
+        zoomOut = document.getElementById("minus"),
+        clockwise = document.getElementById("clockwise"),
+        counterclockwise = document.getElementById("counterclockwise"),
+        translatePos = {},
+        scaleMultiplier = 0.9,
+        startDragOffset = {},
+        mouseDown = false;
  
     // add button event listeners
     zoomIn.addEventListener("click", function () {
