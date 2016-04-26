@@ -122,7 +122,6 @@ function init(){
 
     // add event listeners to handle mobile drag
     canvas.addEventListener("touchstart", function (e) {
-        console.log(e);
         mouseDown = true;
         startDragOffset.x = e.touches[0].clientX - translatePos.x;
         startDragOffset.y = e.touches[0].clientY - translatePos.y;
@@ -134,6 +133,7 @@ function init(){
             translatePos.y = e.touches[0].clientY - startDragOffset.y;
 
             draw(scale, translatePos);
+            e.preventDefault();
         }
     });
 
