@@ -1,10 +1,8 @@
 var angle = 0,
     scale = 1.0;
-    tplTemp = new Image();
+    tplTemp = document.createElement("img");
 
-tplTemp.setAttribute("crossOrigin", "anonymous");
-tplTemp.src = 'http://localhost:8000/avatar-template.png';
-// tplTemp.src = "https://www.dropbox.com/s/qowoi6kixmldbfs/avatar-template.png";
+tplTemp.src = 'avatar-template.png';
 
 function previewFile(){
     var filename = $(this).val().split('\\');
