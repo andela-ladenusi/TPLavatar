@@ -1,5 +1,5 @@
 var tplTemp = document.createElement('img');
-tplTemp.src = 'avatar-temp.png';
+tplTemp.src = 'avatar-template.png';
 
 function previewFile(){
     var filename = $(this).val().split('\\');
