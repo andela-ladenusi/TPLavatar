@@ -45,12 +45,18 @@ canvas {
     display: block;
     background-color: #55ACEE;
     color: #FFF;
-    padding: 10px 12px;
+    padding: 7px 10px;
     border-radius: 4px;
 }
 #zoom-controls span:first-child {
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
 #zoom-controls span:hover {
     background-color: #3AA3E3;
+}
+
+@media screen and (max-width: 640px) {
+    .container {
+        margin: 0 15px;
+    }
 }
