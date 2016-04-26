@@ -1,5 +1,10 @@
-var tplTemp = document.createElement('img');
-tplTemp.src = 'avatar-template.png';
+var angle = 0,
+    scale = 1.0;
+    tplTemp = new Image();
+
+tplTemp.setAttribute("crossOrigin", "anonymous");
+tplTemp.src = 'http://localhost:8000/avatar-template.png';
+// tplTemp.src = "https://www.dropbox.com/s/qowoi6kixmldbfs/avatar-template.png";
 
 function previewFile(){
     var filename = $(this).val().split('\\');
@@ -11,23 +16,20 @@ function previewFile(){
     var fCtx = finalCanvas.getContext('2d');
     var x = cropCanvas.width/2 - preview.width/2;
     var y = cropCanvas.height/2 - preview.height/2;
-    var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-    var reader  = new FileReader();
+    var file = document.querySelector('input[type=file]').files[0]; //sames as here
+    var reader = new FileReader();
 
     reader.onloadend = function () {
         cCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
         fCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
         preview.src = reader.result;
         preview.onload = function () {
-            var translatePos = {
-                x: cropCanvas.width / 2,
-                y: cropCanvas.height / 2
-            };
+            var translatePos = getCoordinates(cropCanvas, preview);
             var scale = 1.0;
 
             draw(scale, translatePos);
-            // cCtx.drawImage(preview, 0, 0);
             updateTPLCanvas();
+            $("#TPLCanvas").removeClass("hidden");
         };
     };
 
@@ -49,79 +51,117 @@ function updateTPLCanvas() {
     fCtx.drawImage(tplTemp, 0, 0, 600, 600);
 }
 
-
-function draw(scale, translatePos){
+function rotateCanvas(deg, translatePos) {
     var preview = document.getElementById('canvasImg');
-    var cropCanvas = document.getElementById("cropCanvas");
-    var cCtx = cropCanvas.getContext("2d");
- 
-    // clear cropCanvas
-    cCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
- 
-    cCtx.save();
-    cCtx.translate(translatePos.x, translatePos.y);
-    cCtx.scale(scale, scale);
-    cCtx.translate(-translatePos.x, -translatePos.y);
-    cCtx.drawImage(preview, translatePos.x, translatePos.y);
-
-    cCtx.restore();
+    var canvas = document.getElementById("cropCanvas");
+    var ctx = canvas.getContext("2d");
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.scale(scale, scale);
+    ctx.translate(canvas.width/2, canvas.height/2);
+    ctx.rotate(deg * (Math.PI/180));
+    ctx.drawImage(preview, -preview.width/2, -preview.height/2);
+    ctx.restore();
 
     updateTPLCanvas();
 }
 
+
+function draw(scale, translatePos) {
+    var preview = document.getElementById('canvasImg');
+    var canvas = document.getElementById("cropCanvas");
+    var ctx = cropCanvas.getContext("2d");
+ 
+    // clear cropCanvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(translatePos.x, translatePos.y);
+    ctx.scale(scale, scale);
+    ctx.translate(-translatePos.x, -translatePos.y);
+    ctx.drawImage(preview, translatePos.x, translatePos.y);
+    ctx.restore();
+
+    updateTPLCanvas();
+}
+
+function getCoordinates(canvas, image) {
+    return {
+        x: (canvas.width / 2) - (image.width / 2),
+        y: (canvas.height / 2) - (image.height / 2)
+    };
+}
+
 function init(){
     var canvas = document.getElementById("cropCanvas");
+    var preview = document.getElementById("canvasImg");
+    var zoomIn = document.getElementById("plus");
+    var zoomOut = document.getElementById("minus");
+    var clockwise = document.getElementById("clockwise");
+    var counterclockwise = document.getElementById("counterclockwise");
  
-    var translatePos = {
-        x: canvas.width / 2,
-        y: canvas.height / 2
-    };
+    var translatePos = {};
  
-    var scale = 1.0;
     var scaleMultiplier = 0.9;
     var startDragOffset = {};
     var mouseDown = false;
  
     // add button event listeners
-    document.getElementById("plus").addEventListener("click", function(){
+    zoomIn.addEventListener("click", function () {
+        translatePos = getCoordinates(canvas, preview);
         scale /= scaleMultiplier;
         draw(scale, translatePos);
     }, false);
  
-    document.getElementById("minus").addEventListener("click", function(){
+    zoomOut.addEventListener("click", function () {
+        translatePos = getCoordinates(canvas, preview);
         scale *= scaleMultiplier;
         draw(scale, translatePos);
     }, false);
+
+    clockwise.addEventListener("click", function (e) {
+        translatePos = getCoordinates(canvas, preview);
+        angle += 45;
+        rotateCanvas(angle, translatePos);
+    });
+
+    counterclockwise.addEventListener("click", function (e) {
+        translatePos = getCoordinates(canvas, preview);
+        angle -= 45;
+        rotateCanvas(angle, translatePos);
+    });
  
-    canvas.addEventListener("mouseover", function(evt){
+    canvas.addEventListener("mouseover", function (e) {
         mouseDown = false;
     });
  
-    canvas.addEventListener("mouseout", function(evt){
+    canvas.addEventListener("mouseout", function (e) {
         mouseDown = false;
     });
     
-    canvas.addEventListener("mouseup", function(evt){
+    canvas.addEventListener("mouseup", function (e) {
         mouseDown = false;
     });
     
     // add event listeners to handle screen drag
-    canvas.addEventListener("mousedown", function(evt){
+    canvas.addEventListener("mousedown", function (e) {
+        translatePos = getCoordinates(canvas, preview);
         mouseDown = true;
-        startDragOffset.x = evt.clientX - translatePos.x;
-        startDragOffset.y = evt.clientY - translatePos.y;
+        startDragOffset.x = e.clientX - translatePos.x;
+        startDragOffset.y = e.clientY - translatePos.y;
     });
  
-    canvas.addEventListener("mousemove", function(evt){
+    canvas.addEventListener("mousemove", function(e){
         if (mouseDown) {
-            translatePos.x = evt.clientX - startDragOffset.x;
-            translatePos.y = evt.clientY - startDragOffset.y;
+            translatePos.x = e.clientX - startDragOffset.x;
+            translatePos.y = e.clientY - startDragOffset.y;
             draw(scale, translatePos);
         }
     });
 
     // add event listeners to handle mobile drag
     canvas.addEventListener("touchstart", function (e) {
+        translatePos = getCoordinates(canvas, preview);
         mouseDown = true;
         startDragOffset.x = e.touches[0].clientX - translatePos.x;
         startDragOffset.y = e.touches[0].clientY - translatePos.y;

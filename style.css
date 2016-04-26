@@ -39,17 +39,19 @@ canvas {
     float: left;
     position: relative;
     height: 300px;
+    padding: 0 10px;
 }
 #zoom-controls span {
     cursor: pointer;
     display: block;
     background-color: #55ACEE;
     color: #FFF;
-    padding: 7px 10px;
+    padding: 5px 8px;
     border-radius: 4px;
-}
-#zoom-controls span:first-child {
     margin-bottom: 10px;
+}
+#zoom-controls span:last-child {
+    margin-bottom: 0;
 }
 #zoom-controls span:hover {
     background-color: #3AA3E3;
