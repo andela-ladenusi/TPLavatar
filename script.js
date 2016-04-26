@@ -44,8 +44,8 @@ function updateTPLCanvas() {
     
     fCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
     fCtx.drawImage(cropCanvas, 20, 20);
-    fCtx.fillStyle = "RGBA(140, 29, 29, 0.6)";
-    fCtx.fillRect(0, 0, 600, 600);
+    // fCtx.fillStyle = "RGBA(140, 29, 29, 0.6)";
+    // fCtx.fillRect(0, 0, 600, 600);
     fCtx.drawImage(tplTemp, 0, 0, 600, 600);
 }
 
